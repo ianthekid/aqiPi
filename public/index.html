@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AQI</title>
+    <script src="aqi.js"></script>
+    <link rel='stylesheet' href='style.css'>
+  </head>
+  <body>
+    <div class="container">
+      <div id="timer">30</div>
+      <h1>AQI</h1>
+      <p class='time' id="time"></p>
+      <div class='aqi-container' id="containerPm25">
+        <div class='aqi-label'>AQI (PM2.5)</div>
+        <div class='aqi' id="aqiPm25"></div>
+        <div class='pm-label' id="pm25"></div>
+      </div>
+      <div class='aqi-container' id="containerPm10">
+        <div class='aqi-label'>AQI (PM10)</div>
+        <div class='aqi' id="aqiPm10"></div>
+        <div class='pm-label' id="pm10"></div>
+      </div>
+      <a href="#" onclick="window.close();return false;">close (x)</a>
+    </div>
+
+
+  <script src="jquery-3.1.1.min.js"></script>
+  <script>
+  function get_aqi() {
+    var url = 'aqi.json';
+    return fetch(url)
+    .then((resp) => resp.json())
+    .then(function(data) {
+      return data;
+    });
+  }
+
+  $( document ).ready(function() {
+    var prev = 0;
+    var latest = [];
+    get_aqi().then((data) => {
+      latest = data;
+      prev = latest.length;
+    });
+
+    setInterval(function(){
+      window.location.reload(true)
+    }, 30000);
+
+    setInterval(function() {
+      var time = parseInt( $('#timer').html() );
+      $('#timer').html(time-1);
+    }, 1000);
+  });
+  </script>
+  </body>
+  <script type="text/javascript">
+    getData();
+    //setInterval(getData, 60000);
+  </script>
+</html>
